@@ -1,23 +1,48 @@
 #include<stdio.h>
-struct node {
+#include<stdlib.h>
+
+struct node{
     int data;
-    struct node *right,*left;
+    struct node *lc,*rc;
 };
-struct node *root=NULL;
-struct node* create()
+struct node* InsertIntoBst(struct node* root,int data)
 {
-    int n
-    printf("Enter element(0 to give null)");
-    scanf("%d", &n);
-    if(n==-1)
-        return NULL;
-    root->data=n;
-    printf("Enter left child\n");
-    root->left = create();
-    printf("Enter right child\n");
-    root->right = create();
+    struct node* new=(struct node*)malloc(sizeof(struct node));
+    new->lc=NULL; new->rc=NULL;
+    new->data=data;
+    if(root==NULL)
+    {
+        root=new;
+        return root;
+    }
+    if(data>root->data)
+    {
+        root->rc=InsertIntoBst(root->rc,data);
+    }
+    else
+    {
+        root->lc=InsertIntoBst(root->lc,data);
+    }
+    return root;
+}
+void traversal(struct node* root)
+{
+    if(root==NULL)
+        return;
+    traversal(root->lc);
+    printf("%d ",root->data);
+    traversal(root->rc);
 }
 int main()
 {
-    struct node *root=create();
+    struct node *root=NULL;
+    printf("Enter elements of BST(-1 to stop)");
+    int data;
+    scanf("%d",&data);
+    while(data!=-1)
+    {
+        root = InsertIntoBst(root,data);
+        scanf("%d",&data);
+    }
+    traversal(root);
 }
